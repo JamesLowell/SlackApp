@@ -58,7 +58,7 @@ hr{
 }
 .user-list li{
   padding: 1rem;
-  width: 11rem;
+  width: 10.5rem;
 }
 .user-list::-webkit-scrollbar {
   width: .5rem;
