@@ -34,11 +34,11 @@
 .landing-page a>button{
   background-color: transparent;
   font-size: 2rem;
-  color: #7986cb;
+  color: white;
 }
 
 .landing-page a:hover{
-  background-color: #56289b;
+  opacity: 0.8;
 }
 .landing-page hr {
   width: 8rem;

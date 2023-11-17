@@ -1,9 +1,41 @@
-import React from 'react'
-
+import React from "react";
+import "./SignInForm.css";
 export default function LoginForm() {
   return (
-    <div>
-      <h1>log in form</h1>
+    <div style={{ height: "100vh", width: "100vw"}}>
+      <div className="box">
+        <h2>Login</h2>
+        <form>
+          <div className="inputBox">
+            <label for="email">Email</label>
+            <input
+              type="text"
+              name="userName"
+              id="userName"
+              placeholder="type your email"
+              required
+            />
+          </div>
+          <div className="inputBox">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="type your password"
+              required
+            />
+          </div>
+          <div>
+            <button type="submit" name="" style={{ float: "left" }}>
+              Submit
+            </button>
+            <a className="button" href="register" style={{ float: "left" }}>
+              Register
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
-  )
+  );
 }
