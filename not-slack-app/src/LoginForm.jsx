@@ -9,9 +9,9 @@ export default function LoginForm() {
           <div className="inputBox">
             <label for="email">Email</label>
             <input
-              type="text"
-              name="userName"
-              id="userName"
+              type="email"
+              name="email"
+              id="email"
               placeholder="type your email"
               required
             />
