@@ -5,12 +5,14 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LandingPage from './LandingPage'
 import LoginForm from './LoginForm'
-
+import RegisterForm from './RegisterForm'
 const router = createBrowserRouter([
   {index:'true',
   element:<LandingPage/>},
   {path:'log-in',
   element:<LoginForm/>},
+  {path:'register',
+  element:<RegisterForm/>},
   {path:'messages',
   element:<SideBar/>}
 ])
