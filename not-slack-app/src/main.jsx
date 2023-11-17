@@ -4,10 +4,13 @@ import SideBar from './SideBar'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LandingPage from './LandingPage'
+import LoginForm from './LoginForm'
 
 const router = createBrowserRouter([
   {index:'true',
   element:<LandingPage/>},
+  {path:'log-in',
+  element:<LoginForm/>},
   {path:'messages',
   element:<SideBar/>}
 ])

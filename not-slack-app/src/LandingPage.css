@@ -17,7 +17,7 @@
   margin-right: 29rem;
   margin-top: 10rem;
 }
-.landing-page button{
+.landing-page a{
   display: inline-block;
   position: absolute;
   bottom: 12rem;
@@ -27,13 +27,27 @@
   background-color: #4c1d95;
   border-radius: 50px;
   padding: 1rem 2rem;
-  font-size: 2rem;
   font-weight: 700;
-  color: white;
   line-height: 26px;
+}
+
+.landing-page a>button{
+  background-color: transparent;
+  font-size: 2rem;
   color: #7986cb;
 }
 
-.landing-page button:hover{
+.landing-page a:hover{
   background-color: #56289b;
+}
+.landing-page hr {
+  width: 8rem;
+  position: absolute;
+  bottom: 16rem;
+	border-color: #4c1d95;
+	border-width: 3px;
+    margin: 20px auto;
+    color: #4c1d95;
+    border: 3px solid #4c1d95;
+    opacity: 1;  
 }

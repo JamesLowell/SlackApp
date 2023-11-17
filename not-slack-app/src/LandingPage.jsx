@@ -5,7 +5,8 @@ export default function LandingPage() {
   return (
     <div className='landing-page'>
       <img src="src/note.png" alt=""></img>
-      <button>Get Started</button>
+      <hr />
+      <a href="log-in"><button>Get Started</button></a>
     </div>
   )
 }
