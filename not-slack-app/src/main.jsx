@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LandingPage from './LandingPage'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
-
 const router = createBrowserRouter([
   {index:'true',
   element:<LandingPage/>},
