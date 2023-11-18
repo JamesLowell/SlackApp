@@ -7,7 +7,7 @@
   justify-content: center;
   height: 98.3vh;
   width: 24vh;
-  background-color: #4c1d95;
+  background-color:  #7986cb;
   font-family: sans-serif;
   padding-top: 1rem;
   border-radius: .2rem;
@@ -23,7 +23,7 @@
   align-items: flex-start;
   width: 80%;
   margin-bottom: .5rem;
-  color: #7986cb;
+  color: white;
   font-size: 2rem;
   font-weight: bold;
 }
@@ -53,7 +53,7 @@ hr{
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0;
-  color: #7986cb;
+  color: white;
   margin-top: .5rem;
 }
 .user-list li{
@@ -72,7 +72,7 @@ hr{
  
 /* Handle */
 .user-list::-webkit-scrollbar-thumb {
-  background: rgb(73, 73, 73); 
+  background: #4c1d95; 
   border-radius: 10px;
 }
 
