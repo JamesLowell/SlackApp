@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect } from "react";
 import SlackApi from "./components/SlackApi";
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 
 export default function LoginForm() {
@@ -22,7 +22,7 @@ export default function LoginForm() {
     try {
       const formDataObject = new FormData(e.currentTarget);
       const body = Object.fromEntries(formDataObject);
-      const res = await SlackApi.post("/auth/sign_in", body);
+      const res = await SlackApi.post("auth/sign_in", body);
 
       SlackApi.defaults.headers["uid"] = res.headers["uid"];
       SlackApi.defaults.headers["access-token"] = res.headers["access-token"];
