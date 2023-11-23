@@ -1,0 +1,46 @@
+.message-container{
+    width: 90%;
+    height: 100vh;
+    background-color: #e1e6ff;
+}
+.message-container h1{
+    position: fixed;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0;
+    background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+.message-conversation-container{
+    padding-left: 1rem;
+    margin-top: 5rem;
+    max-height: 86vh;
+    overflow-y: auto;
+}
+.message-conversation{
+    padding: 1rem;
+    margin: .5rem;
+    background-color: #7986cb;
+    border-radius: .5rem;
+    width: 10rem;
+    color: white;
+}
+.message-input{
+    display: flex;
+    position: absolute;
+    bottom: 1rem;
+    left: 15rem;
+    width: 85%;
+}
+.message-input input{
+    width: 100%;
+    border-radius: 1rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    padding-left: 1rem;
+    color: #4c1d95;
+}

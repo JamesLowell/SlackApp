@@ -22,7 +22,7 @@
   position: absolute;
   top: 1.5rem;
   left: 1.8rem;
-  width: 80%;
+  width: 10rem;
   margin-bottom: .5rem;
   color: white;
   font-size: 2rem;
@@ -51,39 +51,56 @@
 .side-bar input:focus{
   outline: 0;
 }
-.user-list{
+.user-list-container{
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   list-style: none;
   max-height: 95%;
+  max-width: 12rem;
   overflow-y: auto;
   overflow-x: hidden;
   color: white;
   margin-top: 6.5rem;
+  background-color: #7986cb;
+  z-index: 999;
 }
-.user-list li{
+.user-list{
   padding: 1rem;
   width: 10.5rem;
 }
-.user-list::-webkit-scrollbar {
+.user-list-container::-webkit-scrollbar {
   width: .5rem;
 }
 
 /* Track */
-.user-list::-webkit-scrollbar-track {
+.user-list-container::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey; 
   border-radius: 10px;
 }
  
 /* Handle */
-.user-list::-webkit-scrollbar-thumb {
+.user-list-container::-webkit-scrollbar-thumb {
   background: #4c1d95; 
   border-radius: 10px;
 }
 
 /* Handle on hover */
-.user-list::-webkit-scrollbar-thumb:hover {
+.user-list-container::-webkit-scrollbar-thumb:hover {
   background: rgb(150, 150, 150); 
+}
+
+.reciever-list{
+  position: absolute;
+  list-style: none;
+  max-height: 95%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: white;
+  margin-top: 6.5rem;
+  left: 2rem;
+}
+.reciever-list div{
+  padding: .5rem 0;
 }

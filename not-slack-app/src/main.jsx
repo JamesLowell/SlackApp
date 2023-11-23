@@ -6,6 +6,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LandingPage from './LandingPage'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
+import SlackApp from './SlackApp'
+import Home from './Home'
+import Conversation from './Conversation'
+import SlackApi from "./components/SlackApi";
+
 
 const router = createBrowserRouter([
   {index:'true',
@@ -15,7 +20,23 @@ const router = createBrowserRouter([
   {path:'register',
   element:<RegisterForm/>},
   {path:'messages',
-  element:<SideBar/>}
+  element:<SlackApp/>,
+  children:[
+    {
+      index: true,
+      element:<Home/>
+    },
+    {
+      path: "c/:user_id",
+      element: <Conversation/>,
+      loader: async ({params}) => {
+        const data = await SlackApi.get(
+          `/messages?receiver_id=${params.user_id}&receiver_class=User`
+        );
+        return { messages: data, userId: params.user_id };
+      }
+    }
+  ]}
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
