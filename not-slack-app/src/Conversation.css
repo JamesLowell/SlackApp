@@ -17,8 +17,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 .message-conversation-container{
     padding-left: 1rem;
-    margin-top: 5rem;
-    max-height: 86vh;
+    margin-top: 5.5rem;
+    max-height: 83vh;
     overflow-y: auto;
 }
 .message-conversation-container::-webkit-scrollbar {
@@ -46,7 +46,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     margin: .5rem;
     background-color: #7986cb;
     border-radius: .5rem;
-    width: 10rem;
+    width: 15rem;
     color: white;
 }
 .message-input{
@@ -67,6 +67,15 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 .message-input button{
     color: #4c1d95;
     background-color: transparent;
-    font-size: 1rem;
+    font-size: 2rem;
     margin-left: 1rem;
+}
+.message-conversation {
+  padding: 8px;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+
+.message-conversation.sender {
+  background-color: white; 
 }
