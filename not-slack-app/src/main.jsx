@@ -10,6 +10,7 @@ import SlackApp from './SlackApp'
 import Home from './Home'
 import Conversation from './Conversation'
 import SlackApi from "./components/SlackApi";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const router = createBrowserRouter([
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
         const data = await SlackApi.get(
           `/messages?receiver_id=${params.user_id}&receiver_class=User`
         );
-        return { messages: data, userId: params.user_id };
+        return { messages: data, userId: params.user_id, };
       }
     }
   ]}
