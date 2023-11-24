@@ -43,7 +43,7 @@ function SideBar() {
     if (selectedUser) {
       setReceiverList([...receiverList, selectedUser]);
     }
-    setIsSearchFocused(false); // Set search focus to false when link is clicked
+    setIsSearchFocused(false); 
   };
 
   return (
@@ -59,7 +59,7 @@ function SideBar() {
       <span className="search-icon">
         <CiSearch />
       </span>
-      <hr />
+      <hr className="title-hr"/>
       {isSearchFocused && (
         <div className="user-list-container">
           {loading && <div>Loading...</div>}
@@ -85,6 +85,10 @@ function SideBar() {
             </Link>
           </div>
         ))}
+      </div>
+      <hr className="channel-hr"/>
+      <div>
+        <span>Channel</span>
       </div>
     </div>
   );
