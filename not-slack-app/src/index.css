@@ -3,10 +3,15 @@
   padding: 0;
   border: 0;
   font-family: sans-serif;
-  text-decoration: none;
+  
 }
 
 input:focus{
   border: none;
   outline: none;
+}
+
+html{
+  overflow-y: hidden;
+  overflow-x: hidden;
 }

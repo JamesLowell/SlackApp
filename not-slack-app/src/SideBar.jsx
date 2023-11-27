@@ -6,6 +6,10 @@ import SlackApi from "./components/SlackApi";
 import { useDebounce } from "./components/ReactDebounce";
 import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Select from "react-select";
+import { ToastContainer, toast } from "react-toastify";
 
 function SideBar() {
   const [users, setUsers] = useState([]);
@@ -14,20 +18,35 @@ function SideBar() {
   const debouncedSearch = useDebounce(searchQuery);
   const [loading, setLoading] = useState(false);
   const [receiverList, setReceiverList] = useState([]);
-  const [loggedInUserUid, setLoggedInUserUid] = useState('');
+  const [loggedInUserUid, setLoggedInUserUid] = useState("");
+  const [channels, setChannels] = useState([]);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [options, setOptions] = useState([]);
+
+  const [channelName, setChannelName] = useState("");
 
   useEffect(() => {
     // Retrieve user's uid from local storage
-    const uid = localStorage.getItem('uid');
-    setLoggedInUserUid(uid || '');
+    const uid = localStorage.getItem("uid");
+    setLoggedInUserUid(uid || "");
   }, []);
-  
+
   useEffect(() => {
     async function fetchUsers() {
       setLoading(true);
       try {
         const res = await SlackApi.get("users", {});
         if (res && res.data && Array.isArray(res.data.data)) {
+          const fetchedUsers = res.data.data.map((user) => ({
+            value: user.id,
+            label: user.uid.split("@")[0],
+          }));
+          setOptions(fetchedUsers);
           setUsers(res.data.data);
         } else {
           console.error("Invalid data format received:", res.data);
@@ -42,6 +61,10 @@ function SideBar() {
     fetchUsers();
   }, [debouncedSearch]);
 
+  const handleChange = (selectedItems) => {
+    setSelectedOptions(selectedItems);
+  };
+
   const filteredUsers = users.filter((user) =>
     user.uid.toLowerCase().includes(debouncedSearch.toLowerCase())
   );
@@ -51,17 +74,24 @@ function SideBar() {
     if (selectedUser) {
       const userToStore = {
         id: selectedUser.id,
-        splitUid: selectedUser.uid.split("@")[0]
+        splitUid: selectedUser.uid.split("@")[0],
       };
-  
-      const storedUsers = JSON.parse(localStorage.getItem(`userStorage_${loggedInUserUid}`)) || [];
-      
+
+      const storedUsers =
+        JSON.parse(localStorage.getItem(`userStorage_${loggedInUserUid}`)) ||
+        [];
+
       // Check if the user ID already exists in storedUsers
-      const isUserAlreadyStored = storedUsers.some(user => user.id === userToStore.id);
-      
+      const isUserAlreadyStored = storedUsers.some(
+        (user) => user.id === userToStore.id
+      );
+
       if (!isUserAlreadyStored) {
         storedUsers.push(userToStore);
-        localStorage.setItem(`userStorage_${loggedInUserUid}`, JSON.stringify(storedUsers));
+        localStorage.setItem(
+          `userStorage_${loggedInUserUid}`,
+          JSON.stringify(storedUsers)
+        );
         setReceiverList([...receiverList, selectedUser]);
       } else {
         // Handle if user ID already exists in storage (optional)
@@ -72,12 +102,73 @@ function SideBar() {
   };
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem(`userStorage_${loggedInUserUid}`)) || [];
-    setReceiverList(storedUsers.map(user => ({
-      id: user.id,
-      uid: user.splitUid, // Adjust this according to your data structure
-    })));
+    const storedUsers =
+      JSON.parse(localStorage.getItem(`userStorage_${loggedInUserUid}`)) || [];
+    setReceiverList(
+      storedUsers.map((user) => ({
+        id: user.id,
+        uid: user.splitUid, // Adjust this according to your data structure
+      }))
+    );
   }, [loggedInUserUid]);
+
+  useEffect(() => {
+    async function fetchChannel() {
+      try {
+        const res = await SlackApi.get("channels", {});
+        if (res && res.data && Array.isArray(res.data.data)) {
+          // Update setUsers to setChannels or another appropriate state for channels
+          setChannels(res.data.data);
+        } else {
+          console.error("Invalid data format received:", res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching channels:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchChannel();
+  }, []);
+
+  const addChannel = async (e) => {
+    e.preventDefault();
+    try {
+      
+      // Get the selected user IDs from selectedOptions
+      const selectedUserIds = selectedOptions.map((option) => option.value);
+      console.log(selectedUserIds);
+      console.log(channelName);
+
+      const addChannelData = {
+        name: channelName,
+        user_ids: selectedUserIds, // Populate user_ids with selected user IDs
+      };
+
+      await SlackApi.post("channels", addChannelData);
+      // Assuming toast is imported and implemented elsewhere
+      toast.success("Channel created successfully", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      console.log(channelName);
+      setChannelName("");
+      setSelectedOptions([]); // Clear selected options after creating the channel
+      handleClose(); // Close the modal or perform any other necessary actions upon successful channel creation
+    } catch (error) {
+      toast.error("Failed to create channel", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      console.error("Error creating channel:", error);
+    }
+  };
+  const handleInputChange = (e) => {
+    setChannelName(e.target.value);
+  };
+
+  const handleSelectChange = (selectedItems) => {
+    setSelectedOptions(selectedItems);
+  };
 
   return (
     <div className="side-bar">
@@ -97,11 +188,33 @@ function SideBar() {
       {isSearchFocused && (
         <div className="user-list-container">
           {loading && (
-            <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh",
+                width: "10vw",
+                backgroundColor: "#7986cb",
+              }}
+            >
               <Spinner animation="border" />
             </div>
           )}
-          {!loading && filteredUsers.length === 0 && <div>Not Found!</div>}
+          {!loading && filteredUsers.length === 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh",
+                width: "10vw",
+                backgroundColor: "#7986cb",
+              }}
+            >
+              Not Found!
+            </div>
+          )}
           {!loading &&
             filteredUsers.length > 0 &&
             filteredUsers.map((user) => (
@@ -112,8 +225,7 @@ function SideBar() {
               >
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
-                  to={`c/${user.id}`
-                }
+                  to={`c/${user.id}`}
                 >
                   {user.uid.split("@")[0]}
                 </Link>
@@ -136,8 +248,17 @@ function SideBar() {
       <hr className="channel-hr" />
       <Dropdown>
         <Dropdown.Toggle
-          style={{ backgroundColor: "#4c1d95",width:'12.5rem', border: "transparent" ,display:'flex',
-          position:'absolute', left:'-6.5rem', top: '57vh', display:'flex', justifyContent:'center'}}
+          style={{
+            backgroundColor: "#4c1d95",
+            width: "12.5rem",
+            border: "transparent",
+            display: "flex",
+            position: "absolute",
+            left: "-6.5rem",
+            top: "58vh",
+            justifyContent: "center",
+            letterSpacing: ".1rem",
+          }}
           variant="success"
           id="dropdown-basic"
         >
@@ -145,12 +266,104 @@ function SideBar() {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          {loading ? (
+            <div>
+              <Spinner animation="border" />
+            </div>
+          ) : (
+            // Render channels here within the Dropdown.Menu
+            channels.map((channel) => (
+              <Dropdown.Item
+                key={channel.id}
+                style={{
+                  width: "12.5rem",
+                  maxHeight: "7rem",
+                  overflowY: "auto",
+                }}
+              >
+                <Link
+                  style={{
+                    color: "black",
+                    textDecoration: "none",
+                    padding: "5px",
+                  }}
+                  to={`c/${channel.id}`}
+                >
+                  {channel.name}
+                </Link>
+              </Dropdown.Item>
+            ))
+          )}
         </Dropdown.Menu>
       </Dropdown>
-      
+      <div>
+        <span className="create-channel">Create Channel</span>
+        <Button
+          className="create-channel-button"
+          style={{
+            border: "transparent",
+            backgroundColor: "transparent",
+            color: "#4c1d95",
+            fontWeight: "600",
+            padding: "0 .5rem",
+            fontSize: "1.5rem",
+          }}
+          variant="primary"
+          onClick={handleShow}
+        >
+          +
+        </Button>
+      </div>
+      <Modal show={show} onHide={handleClose}>
+        <div className="create-channel-modal">
+          <div className="box">
+            <h2>Create Channel</h2>
+            <form onSubmit={addChannel}>
+              <div className="inputBox">
+                <label for="channel-name">Channel Name</label>
+                <input
+                  value={channelName}
+                  placeholder="channel name"
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="inputBox">
+                <label htmlFor="channel-member">Add members</label>
+                <Select 
+                  className="add-member-input"
+                  options={options}
+                  isMulti
+                  placeholder="Search members..."
+                  value={selectedOptions}
+                  onChange={handleSelectChange} // Handle selection changes
+                  closeMenuOnSelect={false}
+                  isSearchable
+                  required
+                
+                />
+              </div>
+              <div>
+                <button
+                  onClick={handleClose}
+                  className="button"
+                  style={{ float: "left" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="button"
+                  style={{ float: "left" }}
+                >
+                  Create
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </Modal>
+      <ToastContainer />
     </div>
   );
 }
