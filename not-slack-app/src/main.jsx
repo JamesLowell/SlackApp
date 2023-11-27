@@ -11,7 +11,7 @@ import Home from './Home'
 import Conversation from './Conversation'
 import SlackApi from "./components/SlackApi";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import ChannelConversation from './ChannelConversation'
 
 const router = createBrowserRouter([
   {index:'true',
@@ -37,7 +37,16 @@ const router = createBrowserRouter([
         return { messages: data, userId: params.user_id, };
       }
     },
-    
+    {
+      path: "d/:channel_id",
+      element: <ChannelConversation />,
+      loader: async ({ params }) => {
+        const data = await SlackApi.get(
+          `/messages?receiver_id=${params.channel_id}&receiver_class=Channel`
+        );
+        return { messages: data, channelId: params.channel_id, };
+      }
+    },
   ]}
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
