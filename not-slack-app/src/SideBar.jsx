@@ -119,6 +119,7 @@ function SideBar() {
         if (res && res.data && Array.isArray(res.data.data)) {
           // Update setUsers to setChannels or another appropriate state for channels
           setChannels(res.data.data);
+          console.log(channels)
         } else {
           console.error("Invalid data format received:", res.data);
         }
@@ -128,7 +129,6 @@ function SideBar() {
         setLoading(false);
       }
     }
-
     fetchChannel();
   }, []);
 
@@ -151,7 +151,6 @@ function SideBar() {
       toast.success("Channel created successfully", {
         position: toast.POSITION.TOP_CENTER,
       });
-      console.log(channelName);
       setChannelName("");
       setSelectedOptions([]); // Clear selected options after creating the channel
       handleClose(); // Close the modal or perform any other necessary actions upon successful channel creation
@@ -287,7 +286,7 @@ function SideBar() {
                     textDecoration: "none",
                     padding: "5px",
                   }}
-                  to={`c/${channel.id}`}
+                  to={`d/${channel.id}`}
                 >
                   {channel.name}
                 </Link>
