@@ -140,8 +140,89 @@
   max-width: 18vw;
   margin-top: 1rem;
 }
-
-.channel-dropdown{
+.create-channel{
+  display: flex;
+  position: absolute;
+  bottom: 19rem;
+  left: 2rem;
+  color: white;
+  font-weight: 100;
+  letter-spacing: .1rem;
+}
+.create-channel-button{
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 18.8rem;
+  color: #4c1d95;
+  left: 11rem;
+  padding: 0 .5rem;
+  text-align: center;
   background-color: transparent;
 }
 
+.box {
+  font-family: sans-serif;
+  background-color: #7986cb;
+  border-radius: 10px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.8);
+  margin: auto auto;
+  padding: 40px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.box h2 {
+  margin: 0 0 30px 0;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
+
+.box .inputBox label {
+  margin-left: 1rem;
+  color: #fff;
+}
+
+.box .inputBox input {
+  background: white;
+  border-radius: 1.5rem;
+  color: #4c1d95;
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 2rem;
+  margin-top: .5rem;
+  outline: none;
+  padding-top: .8rem;
+  padding-bottom: .8rem;
+  padding-left: 1rem;
+  width: 93%;
+}
+
+.box input[type="submit"], .box button[type="submit"], button.button {
+  font-family: sans-serif;
+  background: #4c1d95;
+  font-size: 11px;
+  border: none;
+  border-radius: 1rem;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 10px 20px;
+  letter-spacing: 2px;
+  outline: none;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin: 2px 10px 2px 0;
+  display: inline-block;
+}
+
+.box input[type="submit"]:hover, .box button[type="submit"]:hover, a.button:hover {
+  opacity: 0.8;
+}
+.channel-select{
+  max-width: 10rem;
+  overflow-y: auto;
+}

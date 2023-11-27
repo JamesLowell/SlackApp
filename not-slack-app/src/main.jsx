@@ -36,7 +36,8 @@ const router = createBrowserRouter([
         );
         return { messages: data, userId: params.user_id, };
       }
-    }
+    },
+    
   ]}
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
