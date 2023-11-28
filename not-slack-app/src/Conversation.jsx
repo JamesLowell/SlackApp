@@ -50,26 +50,6 @@ export default function Conversation() {
     setNewMessage(e.target.value);
   };
 
-  useEffect(() => {
-    async function fetchChannel() {
-      setLoading(true);
-      try {
-        const res = await SlackApi.get("channel", {});
-        if (res && res.data && Array.isArray(res.data.data)) {
-          setUsers(res.data.data);
-        } else {
-          console.error("Invalid data format received:", res.data);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchChannel();
-  }, []);
-
   return (
     <div className="message-container">
       <h1>user:{messages.userId}</h1>
@@ -78,7 +58,7 @@ export default function Conversation() {
         messages.messages.data.data.length > 0 ? (
           messages.messages.data.data.map((message) => (
             <div key={message.id}>
-              <p className={message?.sender?.id === messages.userId ? 'message-conversation sender' : 'message-conversation'}>{message.body}</p>
+              <p className={String(message?.sender?.id) === String(messages.userId) ? 'message-conversation-sender' : 'message-conversation'}>{message.body}</p>
             </div>
           ))
         ) : (

@@ -10,6 +10,9 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
+import { TiInfoLarge } from "react-icons/ti";
+import { useNavigate } from "react-router-dom";
+
 
 function SideBar() {
   const [users, setUsers] = useState([]);
@@ -30,11 +33,23 @@ function SideBar() {
 
   const [channelName, setChannelName] = useState("");
 
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
+  const handleCloseInfoModal = () => setShowInfoModal(false);
+  const handleShowInfoModal = () => setShowInfoModal(true);
+  
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Retrieve user's uid from local storage
     const uid = localStorage.getItem("uid");
     setLoggedInUserUid(uid || "");
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("uid");
+    navigate("/log-in");
+  };
 
   useEffect(() => {
     async function fetchUsers() {
@@ -226,6 +241,7 @@ function SideBar() {
                   style={{ color: "white", textDecoration: "none" }}
                   to={`c/${user.id}`}
                 >
+                  <span className="first-letter">{user.uid.charAt(0).toUpperCase()}</span>
                   {user.uid.split("@")[0]}
                 </Link>
               </div>
@@ -236,9 +252,12 @@ function SideBar() {
         {receiverList.map((receiverUser) => (
           <div key={receiverUser.id}>
             <Link
-              style={{ color: "white", textDecoration: "none" }}
+              style={{ color: "white", textDecoration: "none" , display:'flex', alignItems:'center'}}
               to={`c/${receiverUser.id}`}
             >
+              <div>
+                <span className="first-letter">{receiverUser.uid.charAt(0).toUpperCase()}</span>
+                </div>
               {receiverUser.uid.split("@")[0]}
             </Link>
           </div>
@@ -362,8 +381,34 @@ function SideBar() {
           </div>
         </div>
       </Modal>
-      <ToastContainer />
+      <button className="info-button" onClick={handleShowInfoModal}><TiInfoLarge />
+</button>
+<Modal show={showInfoModal} onHide={handleCloseInfoModal}>
+<div className="create-channel-modal">
+          <div className="box">
+            <h2>Create Channel</h2>
+              <div>
+                <button
+                  onClick={handleCloseInfoModal}
+                  className="button"
+                  style={{ float: "left" }}
+                >
+                  Close
+                </button>
+                <a onClick={handleLogout}>
+  <button type="button" className="button" style={{ float: "left" }}>
+    Logout
+  </button>
+</a>
+                
+              </div>
+            
+          </div>
+        </div>
+      </Modal>
+      <ToastContainer/>
     </div>
+    
   );
 }
 
