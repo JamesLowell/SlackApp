@@ -128,7 +128,7 @@
   background: rgb(150, 150, 150); 
 }
 .reciever-list div{
-  padding: 1rem 0;
+  padding: .5rem 0;
 }
 
 .channel-hr{
@@ -222,7 +222,22 @@
 .box input[type="submit"]:hover, .box button[type="submit"]:hover, a.button:hover {
   opacity: 0.8;
 }
-.channel-select{
-  max-width: 10rem;
-  overflow-y: auto;
+.first-letter {
+  display: inline-block;
+  width: 30px; /* Adjust the width as per your design */
+  height: 30px; /* Adjust the height as per your design */
+  border-radius: 50%; /* Makes the first letter circular */
+  background-color: rgb(150, 137, 65); /* Example background color */
+  color: white; /* Example text color */
+  text-align: center;
+  line-height: 30px; /* Centers the text vertically */
+  margin-right: 10px; /* Adjust spacing between the letter and the username */
+  font-weight: bold; /* Adjust font weight if needed */
+}
+.info-button{
+  background-color: transparent;
+  color: #4c1d95;
+  position: absolute;
+  bottom: 4rem;
+  font-size: 2rem;
 }

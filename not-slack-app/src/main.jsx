@@ -12,6 +12,7 @@ import Conversation from './Conversation'
 import SlackApi from "./components/SlackApi";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ChannelConversation from './ChannelConversation'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const router = createBrowserRouter([
   {index:'true',
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
   {path:'register',
   element:<RegisterForm/>},
   {path:'messages',
-  element:<SlackApp/>,
+  element:<ProtectedRoute><SlackApp/></ProtectedRoute>,
   children:[
     {
       index: true,
