@@ -8,8 +8,8 @@ export default function Home() {
           height: "100%",
           width: "100%",
           position: "absolute",
-          top:'50vh',
-          left:'50vw',
+          top: "50vh",
+          left: "50vw",
         }}
       >
         Choose Conversation

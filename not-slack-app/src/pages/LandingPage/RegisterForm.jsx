@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./SignInForm.css";
-import SlackApi from "./components/SlackApi";
+import "./assets/SignInForm.css";
+import SlackApi from "../../utils/SlackApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -70,7 +70,7 @@ export default function RegisterForm() {
       style={{
         height: "100vh",
         width: "100vw",
-        backgroundImage: `url('')`,
+        backgroundImage: `url('./src/Pages/LandingPage/assets/login-form.gif')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

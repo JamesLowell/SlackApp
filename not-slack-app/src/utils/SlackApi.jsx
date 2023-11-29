@@ -5,10 +5,10 @@ const SlackApi = axios.create({
   headers: {
     "Content-Type": "application/json",
     "access-token": localStorage.getItem("access-token") || "",
-    "uid": localStorage.getItem("uid") || "",
-    "expiry": localStorage.getItem("expiry") || "",
-    "client": localStorage.getItem("client") || "",
-  }
+    uid: localStorage.getItem("uid") || "",
+    expiry: localStorage.getItem("expiry") || "",
+    client: localStorage.getItem("client") || "",
+  },
 });
 
 export default SlackApi;
