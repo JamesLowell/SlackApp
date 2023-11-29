@@ -1,18 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import SideBar from './SideBar'
-import './index.css'
+import SideBar from './pages/MainPage/components/SideBar'
+import './assets/index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import LandingPage from './LandingPage'
-import LoginForm from './LoginForm'
-import RegisterForm from './RegisterForm'
-import SlackApp from './SlackApp'
-import Home from './Home'
-import Conversation from './Conversation'
-import SlackApi from "./components/SlackApi";
+import LandingPage from './pages/LandingPage/LandingPage'
+import LoginForm from './pages/LandingPage/LoginForm'
+import RegisterForm from './pages/LandingPage/RegisterForm'
+import SlackApp from './pages/MainPage/SlackApp'
+import Home from './pages/MainPage/components/Home'
+import Conversation from './pages/MainPage/components/Conversation'
+import SlackApi from "./utils/SlackApi";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ChannelConversation from './ChannelConversation'
-import ProtectedRoute from './components/ProtectedRoute'
+import ChannelConversation from './pages/MainPage/components/ChannelConversation'
+import ProtectedRoute from './utils/ProtectedRoute'
 
 const router = createBrowserRouter([
   {index:'true',

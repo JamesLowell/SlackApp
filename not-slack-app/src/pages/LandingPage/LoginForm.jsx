@@ -1,11 +1,10 @@
 import React from "react";
-import "./SignInForm.css";
+import "./assets/SignInForm.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect } from "react";
-import SlackApi from "./components/SlackApi";
-import { useNavigate} from 'react-router-dom';
-
+import SlackApi from "../../utils/SlackApi";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -35,14 +34,13 @@ export default function LoginForm() {
       localStorage.setItem("expiry", res.headers["expiry"]);
 
       setIsAuthenticated(true);
-
     } catch (error) {
       toast.error("Make sure email and password correct!", {
         position: toast.POSITION.TOP_CENTER,
       });
       console.error("Registration failed:", error);
     }
-  }
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -58,12 +56,21 @@ export default function LoginForm() {
         navigate("/messages", { replace: true });
       }, 3000);
 
-      return () => clearTimeout(timeout); 
+      return () => clearTimeout(timeout);
     }
   }, [isAuthenticated, navigate]);
 
   return (
-    <div style={{ height: "100vh", width: "100vw"}}>
+    <div
+      className="login-container"
+      style={{
+        height: "100vh",
+        width: "100vw",
+        backgroundImage: `url('./src/Pages/LandingPage/assets/login-form.gif')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="box">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>

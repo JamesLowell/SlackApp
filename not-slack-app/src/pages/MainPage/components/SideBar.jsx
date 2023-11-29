@@ -1,9 +1,9 @@
-import "./SideBar.css";
+import "./assets/SideBar.css";
 import { CiSearch } from "react-icons/ci";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Assuming you're using React Router
-import SlackApi from "./components/SlackApi";
-import { useDebounce } from "./components/ReactDebounce";
+import SlackApi from "../../../utils/SlackApi";
+import { useDebounce } from "../../../utils/ReactDebounce";
 import Spinner from "react-bootstrap/Spinner";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
@@ -12,36 +12,35 @@ import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import { TiInfoLarge } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
-
+import { MdDeleteOutline } from "react-icons/md";
+import { useFetchUsers } from "../utils/useFetchUsers";
+import { useFetchChannels } from "../utils/useFetchChannels";
 
 function SideBar() {
-  const [users, setUsers] = useState([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebounce(searchQuery);
-  const [loading, setLoading] = useState(false);
+  const { users, options, loading } = useFetchUsers(debouncedSearch);
+  const { channels } = useFetchChannels();
+
   const [receiverList, setReceiverList] = useState([]);
   const [loggedInUserUid, setLoggedInUserUid] = useState("");
-  const [channels, setChannels] = useState([]);
-  const [show, setShow] = useState(false);
+  const [showChannel, setShowChannel] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleCloseChannel = () => setShowChannel(false);
+  const handleShowChannel = () => setShowChannel(true);
 
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [options, setOptions] = useState([]);
 
   const [channelName, setChannelName] = useState("");
-
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   const handleCloseInfoModal = () => setShowInfoModal(false);
   const handleShowInfoModal = () => setShowInfoModal(true);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Retrieve user's uid from local storage
     const uid = localStorage.getItem("uid");
     setLoggedInUserUid(uid || "");
   }, []);
@@ -49,35 +48,6 @@ function SideBar() {
   const handleLogout = () => {
     localStorage.removeItem("uid");
     navigate("/log-in");
-  };
-
-  useEffect(() => {
-    async function fetchUsers() {
-      setLoading(true);
-      try {
-        const res = await SlackApi.get("users", {});
-        if (res && res.data && Array.isArray(res.data.data)) {
-          const fetchedUsers = res.data.data.map((user) => ({
-            value: user.id,
-            label: user.uid.split("@")[0],
-          }));
-          setOptions(fetchedUsers);
-          setUsers(res.data.data);
-        } else {
-          console.error("Invalid data format received:", res.data);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchUsers();
-  }, [debouncedSearch]);
-
-  const handleChange = (selectedItems) => {
-    setSelectedOptions(selectedItems);
   };
 
   const filteredUsers = users.filter((user) =>
@@ -96,7 +66,6 @@ function SideBar() {
         JSON.parse(localStorage.getItem(`userStorage_${loggedInUserUid}`)) ||
         [];
 
-      // Check if the user ID already exists in storedUsers
       const isUserAlreadyStored = storedUsers.some(
         (user) => user.id === userToStore.id
       );
@@ -109,7 +78,6 @@ function SideBar() {
         );
         setReceiverList([...receiverList, selectedUser]);
       } else {
-        // Handle if user ID already exists in storage (optional)
         console.log(`User with ID ${userToStore.id} is already in storage.`);
       }
     }
@@ -122,53 +90,45 @@ function SideBar() {
     setReceiverList(
       storedUsers.map((user) => ({
         id: user.id,
-        uid: user.splitUid, // Adjust this according to your data structure
+        uid: user.splitUid,
       }))
     );
   }, [loggedInUserUid]);
 
-  useEffect(() => {
-    async function fetchChannel() {
-      try {
-        const res = await SlackApi.get("channels", {});
-        if (res && res.data && Array.isArray(res.data.data)) {
-          // Update setUsers to setChannels or another appropriate state for channels
-          setChannels(res.data.data);
-          console.log(channels)
-        } else {
-          console.error("Invalid data format received:", res.data);
-        }
-      } catch (error) {
-        console.error("Error fetching channels:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchChannel();
-  }, []);
+  const removeReceiver = (userId) => {
+    const updatedReceivers = receiverList.filter(
+      (receiver) => receiver.id !== userId
+    );
+    setReceiverList(updatedReceivers);
+
+    const storedUsers =
+      JSON.parse(localStorage.getItem(`userStorage_${loggedInUserUid}`)) || [];
+    const updatedStoredUsers = storedUsers.filter((user) => user.id !== userId);
+    localStorage.setItem(
+      `userStorage_${loggedInUserUid}`,
+      JSON.stringify(updatedStoredUsers)
+    );
+  };
 
   const addChannel = async (e) => {
     e.preventDefault();
     try {
-      
-      // Get the selected user IDs from selectedOptions
       const selectedUserIds = selectedOptions.map((option) => option.value);
       console.log(selectedUserIds);
       console.log(channelName);
 
       const addChannelData = {
         name: channelName,
-        user_ids: selectedUserIds, // Populate user_ids with selected user IDs
+        user_ids: selectedUserIds,
       };
 
       await SlackApi.post("channels", addChannelData);
-      // Assuming toast is imported and implemented elsewhere
       toast.success("Channel created successfully", {
         position: toast.POSITION.TOP_CENTER,
       });
       setChannelName("");
-      setSelectedOptions([]); // Clear selected options after creating the channel
-      handleClose(); // Close the modal or perform any other necessary actions upon successful channel creation
+      setSelectedOptions([]);
+      handleCloseChannel();
     } catch (error) {
       toast.error("Failed to create channel", {
         position: toast.POSITION.TOP_CENTER,
@@ -183,6 +143,8 @@ function SideBar() {
   const handleSelectChange = (selectedItems) => {
     setSelectedOptions(selectedItems);
   };
+
+  const userEmail = localStorage.getItem("uid");
 
   return (
     <div className="side-bar">
@@ -241,7 +203,9 @@ function SideBar() {
                   style={{ color: "white", textDecoration: "none" }}
                   to={`c/${user.id}`}
                 >
-                  <span className="first-letter">{user.uid.charAt(0).toUpperCase()}</span>
+                  <span className="first-letter">
+                    {user.uid.charAt(0).toUpperCase()}
+                  </span>
                   {user.uid.split("@")[0]}
                 </Link>
               </div>
@@ -252,14 +216,27 @@ function SideBar() {
         {receiverList.map((receiverUser) => (
           <div key={receiverUser.id}>
             <Link
-              style={{ color: "white", textDecoration: "none" , display:'flex', alignItems:'center'}}
+              style={{
+                color: "white",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+              }}
               to={`c/${receiverUser.id}`}
             >
               <div>
-                <span className="first-letter">{receiverUser.uid.charAt(0).toUpperCase()}</span>
-                </div>
+                <span className="first-letter">
+                  {receiverUser.uid.charAt(0).toUpperCase()}
+                </span>
+              </div>
               {receiverUser.uid.split("@")[0]}
             </Link>
+            <button
+              className="receiver-delete-button"
+              onClick={() => removeReceiver(receiverUser.id)}
+            >
+              <MdDeleteOutline />
+            </button>
           </div>
         ))}
       </div>
@@ -283,20 +260,22 @@ function SideBar() {
           Channel
         </Dropdown.Toggle>
 
-        <Dropdown.Menu>
+        <Dropdown.Menu
+          style={{
+            maxHeight: "15rem",
+            overflowY: "auto",
+          }}
+        >
           {loading ? (
             <div>
               <Spinner animation="border" />
             </div>
           ) : (
-            // Render channels here within the Dropdown.Menu
             channels.map((channel) => (
               <Dropdown.Item
                 key={channel.id}
                 style={{
                   width: "12.5rem",
-                  maxHeight: "7rem",
-                  overflowY: "auto",
                 }}
               >
                 <Link
@@ -327,12 +306,12 @@ function SideBar() {
             fontSize: "1.5rem",
           }}
           variant="primary"
-          onClick={handleShow}
+          onClick={handleShowChannel}
         >
           +
         </Button>
       </div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={showChannel} onHide={handleCloseChannel}>
         <div className="create-channel-modal">
           <div className="box">
             <h2>Create Channel</h2>
@@ -348,22 +327,21 @@ function SideBar() {
               </div>
               <div className="inputBox">
                 <label htmlFor="channel-member">Add members</label>
-                <Select 
+                <Select
                   className="add-member-input"
                   options={options}
                   isMulti
                   placeholder="Search members..."
                   value={selectedOptions}
-                  onChange={handleSelectChange} // Handle selection changes
+                  onChange={handleSelectChange}
                   closeMenuOnSelect={false}
                   isSearchable
                   required
-                
                 />
               </div>
               <div>
                 <button
-                  onClick={handleClose}
+                  onClick={handleCloseChannel}
                   className="button"
                   style={{ float: "left" }}
                 >
@@ -381,34 +359,39 @@ function SideBar() {
           </div>
         </div>
       </Modal>
-      <button className="info-button" onClick={handleShowInfoModal}><TiInfoLarge />
-</button>
-<Modal show={showInfoModal} onHide={handleCloseInfoModal}>
-<div className="create-channel-modal">
+      <button className="info-button" onClick={handleShowInfoModal}>
+        <TiInfoLarge />
+      </button>
+      <Modal show={showInfoModal} onHide={handleCloseInfoModal}>
+        <div>
           <div className="box">
-            <h2>Create Channel</h2>
-              <div>
+            <span className="user-first-letter">
+              {userEmail.charAt(0).toUpperCase()}
+            </span>
+            <h2>{userEmail}</h2>
+            <div>
+              <button
+                onClick={handleCloseInfoModal}
+                className="button"
+                style={{ float: "left" }}
+              >
+                Close
+              </button>
+              <a onClick={handleLogout}>
                 <button
-                  onClick={handleCloseInfoModal}
+                  type="button"
                   className="button"
                   style={{ float: "left" }}
                 >
-                  Close
+                  Logout
                 </button>
-                <a onClick={handleLogout}>
-  <button type="button" className="button" style={{ float: "left" }}>
-    Logout
-  </button>
-</a>
-                
-              </div>
-            
+              </a>
+            </div>
           </div>
         </div>
       </Modal>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
-    
   );
 }
 

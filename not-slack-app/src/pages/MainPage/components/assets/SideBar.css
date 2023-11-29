@@ -128,7 +128,9 @@
   background: rgb(150, 150, 150); 
 }
 .reciever-list div{
+  display: flex;
   padding: .5rem 0;
+  gap: 1rem;
 }
 
 .channel-hr{
@@ -162,6 +164,10 @@
 }
 
 .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   font-family: sans-serif;
   background-color: #7986cb;
   border-radius: 10px;
@@ -223,16 +229,18 @@
   opacity: 0.8;
 }
 .first-letter {
-  display: inline-block;
-  width: 30px; /* Adjust the width as per your design */
-  height: 30px; /* Adjust the height as per your design */
-  border-radius: 50%; /* Makes the first letter circular */
-  background-color: rgb(150, 137, 65); /* Example background color */
-  color: white; /* Example text color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem; 
+  border-radius: 50%; 
+  background-color: yellow; 
+  color: #4c1d95; 
   text-align: center;
-  line-height: 30px; /* Centers the text vertically */
-  margin-right: 10px; /* Adjust spacing between the letter and the username */
-  font-weight: bold; /* Adjust font weight if needed */
+  line-height: 30px; 
+  margin-right: 10px;
+  font-weight: bolder;
 }
 .info-button{
   background-color: transparent;
@@ -240,4 +248,24 @@
   position: absolute;
   bottom: 4rem;
   font-size: 2rem;
+}
+.receiver-delete-button{
+  background-color: transparent;
+  color: #4c1d95;
+}
+.user-first-letter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8rem;
+  height: 8rem; 
+  border-radius: 50%; 
+  background-color: white; 
+  color: #4c1d95; 
+  font-size: 3rem;
+  text-align: center;
+  line-height: 30px; 
+  margin-right: 10px;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }
