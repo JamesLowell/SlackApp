@@ -22,7 +22,6 @@ export default function Conversation() {
   const [infoShow, infoSetShow] = useState(false);
 
   useEffect(() => {
-    // Retrieve user's uid from local storage
     const uid = localStorage.getItem("uid");
     setLoggedInUserUid(uid || "");
   }, []);
@@ -82,6 +81,10 @@ export default function Conversation() {
       <form onSubmit={sendMessage}>
         <div className="message-input">
           <input
+          style={{
+            width:'70vw',
+            marginLeft:'4rem'
+          }}
             type="text"
             value={newMessage}
             onChange={handleInputChange}

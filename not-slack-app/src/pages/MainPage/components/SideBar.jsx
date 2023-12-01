@@ -200,7 +200,13 @@ function SideBar() {
                 onClick={() => handleLinkClick(user.id)}
               >
                 <Link
-                  style={{ color: "white", textDecoration: "none" }}
+                  style={{
+                    display: 'flex', 
+                    color: "white",
+                    textDecoration: "none",
+                    alignItems:'center',
+                    justifyContent:'center'
+                  }}
                   to={`c/${user.id}`}
                 >
                   <span className="first-letter">
@@ -209,7 +215,7 @@ function SideBar() {
                   <span>
                     {user.uid.split("@")[0]}
                   </span>
-                  
+
                 </Link>
               </div>
             ))}
@@ -224,6 +230,7 @@ function SideBar() {
                 textDecoration: "none",
                 display: "flex",
                 alignItems: "center",
+                width: '12vw'
               }}
               to={`c/${receiverUser.id}`}
             >
@@ -363,7 +370,7 @@ function SideBar() {
         </div>
       </Modal>
       <button className="info-button" onClick={handleShowInfoModal}>
-      <RxHamburgerMenu />
+        <RxHamburgerMenu />
       </button>
       <Modal show={showInfoModal} onHide={handleCloseInfoModal}>
         <div>
