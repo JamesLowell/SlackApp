@@ -14,8 +14,13 @@ export default function Conversation() {
   const [loggedInUserUid, setLoggedInUserUid] = useState("");
   const storedUsers =
     JSON.parse(localStorage.getItem(`userStorage_${loggedInUserUid}`)) || [];
-  console.log(messages);
+  console.log(messages.userId);
   console.log(storedUsers);
+
+  let matchedUser = null;
+if (storedUsers && storedUsers.length > 0) {
+  matchedUser = storedUsers.find(user => user.id === parseInt(messages.userId));
+}
 
   const handleInfoClose = () => infoSetShow(false);
   const handleInfoShow = () => infoSetShow(true);
@@ -54,10 +59,14 @@ export default function Conversation() {
   const handleInputChange = (e) => {
     setNewMessage(e.target.value);
   };
-
+  
   return (
     <div className="message-container">
-      <h1>user:{messages.userId}</h1>
+      {matchedUser ? (
+      <h1>{matchedUser.splitUid}</h1>
+    ) : (
+      <h1>Unknown</h1>
+    )}
       <div className="message-conversation-container">
         {Array.isArray(messages?.messages?.data?.data) &&
         messages.messages.data.data.length > 0 ? (
@@ -112,9 +121,16 @@ export default function Conversation() {
       <ToastContainer />
       <Modal show={infoShow} onHide={handleInfoClose}>
         <div>
-          <div className="box">
-            <h2>{messages.userId}</h2>
-          </div>
+        <div className="box">
+      {matchedUser ? (
+        <>
+          <h1 className="user-first-letter">{matchedUser.splitUid.charAt(0).toUpperCase()}</h1>
+          <h1>{matchedUser.splitUid}</h1>
+        </>
+      ) : (
+        <h1>Unknown</h1>
+      )}
+    </div>
         </div>
       </Modal>
       <ToastContainer />

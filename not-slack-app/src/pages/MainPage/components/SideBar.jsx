@@ -392,7 +392,9 @@ function SideBar() {
             <span className="user-first-letter">
               {userEmail.charAt(0).toUpperCase()}
             </span>
-            <h2>{userEmail}</h2>
+            <h2 style={{
+              color:'#4c1d95'
+            }}>{userEmail}</h2>
             <div>
               <button
                 onClick={handleCloseInfoModal}

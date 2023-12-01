@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         );
         return { messages: data, channelId: params.channel_id, };
       }
-    },
+    }
   ]}
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
