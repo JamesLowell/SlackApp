@@ -117,6 +117,13 @@ function SideBar() {
       console.log(selectedUserIds);
       console.log(channelName);
 
+      if (channelName.length < 3) {
+        toast.error("Channel name should be at least 3 characters long", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return; // Exit the function if the channel name is too short
+      }
+      
       const addChannelData = {
         name: channelName,
         user_ids: selectedUserIds,
