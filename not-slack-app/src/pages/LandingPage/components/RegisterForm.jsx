@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import "./assets/SignInForm.css";
-import SlackApi from "../../utils/SlackApi";
+import "../assets/SignInForm.css";
+import SlackApi from "../../../utils/SlackApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -47,13 +50,14 @@ export default function RegisterForm() {
       toast.success("Register Submit!", {
         position: toast.POSITION.TOP_CENTER,
       });
+      navigate("/log-in")
       setFormData({
         email: "",
         password: "",
         password_confirmation: "",
       });
     } catch (error) {
-      toast.error("Register Failed!", {
+      toast.error("Email already taken!", {
         position: toast.POSITION.TOP_CENTER,
       });
       console.error("Registration failed:", error);
