@@ -1,5 +1,5 @@
 import React from 'react'
-import "./assets/LandingPage.css"
+import "../assets/LandingPage.css"
 import "@fontsource/pacifico";
 
 export default function LandingPage() {

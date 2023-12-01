@@ -17,7 +17,7 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 10rem;
+  bottom: 5rem;
   outline: 0;
   border: 0;
   cursor: pointer;
@@ -27,15 +27,15 @@
   font-weight: 700;
   line-height: 26px;
   text-decoration: none;
-  height: 6rem;
-  width: 19.5rem;
+  height: 3rem;
+  width: 6remrem;
   font-family: "Pacifico";
   
 }
 
 .landing-page a > button {
   background-color: transparent;
-  font-size: 4rem;
+  font-size: 2rem;
   color: white;
 }
 
@@ -49,9 +49,9 @@
 }
 
 .landing-page hr {
-  width: 14rem;
+  width: 8rem;
   position: absolute;
-  bottom: 15.5rem;
+  bottom: 7rem;
   border-color: #4c1d95;
   border-width: 3px;
   margin: 20px auto;

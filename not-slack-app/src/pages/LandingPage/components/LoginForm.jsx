@@ -1,9 +1,9 @@
 import React from "react";
-import "./assets/SignInForm.css";
+import "../assets/SignInForm.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect } from "react";
-import SlackApi from "../../utils/SlackApi";
+import SlackApi from "../../../utils/SlackApi";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
