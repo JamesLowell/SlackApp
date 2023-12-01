@@ -8,8 +8,9 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
 import { useFetchUsers } from "../utils/useFetchUsers";
+import { useEffect } from "react";
 
-export default function Conversation() {
+export default function ChannelConversation() {
   const messages = useLoaderData();
   const [newMessage, setNewMessage] = useState("");
   const [selectedMember, setSelectedMember] = useState(null);
@@ -21,6 +22,31 @@ export default function Conversation() {
   const [infoShow, infoSetShow] = useState(false);
 
   const { users, options, loading } = useFetchUsers();
+
+  const [memberList, setMemberList] = useState([]);
+  const [loadingMembers, setLoadingMembers] = useState(true);
+  const channelId = messages.channelId; // Replace messages.channelId with the actual value
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const res = await SlackApi.get(`channels?id=${channelId}`);
+        if (res && res.data && Array.isArray(res.data.members)) {
+          setMemberList(res.data.members);
+        } else {
+          console.error("Invalid data format received for members:", res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching members:", error);
+      } finally {
+        setLoadingMembers(false);
+      }
+    };
+
+    if (channelId) {
+      fetchMembers();
+    }
+  }, [channelId]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -78,7 +104,7 @@ export default function Conversation() {
   const handleMemberSelect = (selectedOption) => {
     setSelectedMember(selectedOption);
   };
-
+  
   return (
     <div className="message-container">
       <h1>channel:{messages.channelId}</h1>
@@ -139,7 +165,10 @@ export default function Conversation() {
         <div>
           <div className="box">
             <h2>Channel: {messages.channelId}</h2>
-            <span className="members-list" style={{ height: '10rem' }}>member list</span>
+            <span style={{ height: '5rem', color: 'white' }}>Member-list</span>
+            <span className="members-list">
+              {memberList.id}
+            </span>
             <Select
               styles={{
                 control: (provided) => ({
