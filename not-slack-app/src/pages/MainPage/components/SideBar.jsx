@@ -10,7 +10,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
-import { TiInfoLarge } from "react-icons/ti";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { MdDeleteOutline } from "react-icons/md";
 import { useFetchUsers } from "../utils/useFetchUsers";
@@ -206,7 +206,10 @@ function SideBar() {
                   <span className="first-letter">
                     {user.uid.charAt(0).toUpperCase()}
                   </span>
-                  {user.uid.split("@")[0]}
+                  <span>
+                    {user.uid.split("@")[0]}
+                  </span>
+                  
                 </Link>
               </div>
             ))}
@@ -250,7 +253,7 @@ function SideBar() {
             display: "flex",
             position: "absolute",
             left: "-6.5rem",
-            top: "58vh",
+            top: "60vh",
             justifyContent: "center",
             letterSpacing: ".1rem",
           }}
@@ -360,7 +363,7 @@ function SideBar() {
         </div>
       </Modal>
       <button className="info-button" onClick={handleShowInfoModal}>
-        <TiInfoLarge />
+      <RxHamburgerMenu />
       </button>
       <Modal show={showInfoModal} onHide={handleCloseInfoModal}>
         <div>
