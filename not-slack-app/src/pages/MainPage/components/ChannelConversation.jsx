@@ -21,11 +21,10 @@ export default function ChannelConversation() {
   const handleInfoShow = () => infoSetShow(true);
   const [infoShow, infoSetShow] = useState(false);
 
-  const { users, options, loading } = useFetchUsers();
+  const { options, loading } = useFetchUsers();
 
   const [memberList, setMemberList] = useState([]);
-  const [loadingMembers, setLoadingMembers] = useState(true);
-  const channelId = messages.channelId; // Replace messages.channelId with the actual value
+  const channelId = messages.channelId;
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -38,8 +37,6 @@ export default function ChannelConversation() {
         }
       } catch (error) {
         console.error("Error fetching members:", error);
-      } finally {
-        setLoadingMembers(false);
       }
     };
 
@@ -104,7 +101,7 @@ export default function ChannelConversation() {
   const handleMemberSelect = (selectedOption) => {
     setSelectedMember(selectedOption);
   };
-  
+
   return (
     <div className="message-container">
       <h1>channel:{messages.channelId}</h1>

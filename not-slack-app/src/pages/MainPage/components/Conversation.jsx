@@ -41,13 +41,10 @@ if (storedUsers && storedUsers.length > 0) {
       };
 
       await SlackApi.post("messages", messageData);
-      // Assuming toast is imported and implemented elsewhere
       toast.success("Message sent successfully", {
         position: toast.POSITION.TOP_CENTER,
       });
       setNewMessage("");
-      // You may want to refresh or update your messages after sending
-      // Implement the logic here if necessary
     } catch (error) {
       toast.error("Failed to send message", {
         position: toast.POSITION.TOP_CENTER,
