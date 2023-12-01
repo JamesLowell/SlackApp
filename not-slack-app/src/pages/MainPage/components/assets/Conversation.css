@@ -49,11 +49,10 @@
   display: flex;
   position: absolute;
   bottom: 1rem;
-  left: 15.5rem;
-  width: 86%;
+  left: 2rem;
+  width: 90vw;
 }
 .message-input input {
-  width: 100%;
   border-radius: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
