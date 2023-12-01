@@ -201,11 +201,11 @@ function SideBar() {
               >
                 <Link
                   style={{
-                    display: 'flex', 
+                    display: 'flex',
                     color: "white",
                     textDecoration: "none",
-                    alignItems:'center',
-                    justifyContent:'center'
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                   to={`c/${user.id}`}
                 >
@@ -338,6 +338,13 @@ function SideBar() {
               <div className="inputBox">
                 <label htmlFor="channel-member">Add members</label>
                 <Select
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      width: '15rem',
+                      marginBottom: '1rem' // Set your desired width here
+                    }),
+                  }}
                   className="add-member-input"
                   options={options}
                   isMulti
