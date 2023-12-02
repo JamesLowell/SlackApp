@@ -54,7 +54,7 @@ export default function LoginForm() {
 
       const timeout = setTimeout(() => {
         navigate("/messages", { replace: true });
-      }, 3000);
+      }, 5000);
 
       return () => clearTimeout(timeout);
     }
@@ -73,7 +73,8 @@ export default function LoginForm() {
     >
       <div className="box">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}
+        data-testid="login-form">
           <div className="inputBox">
             <label for="email">Email</label>
             <input
@@ -84,6 +85,7 @@ export default function LoginForm() {
               required
               value={formData.email}
               onChange={handleInputChange}
+              data-testid="email-input"
             />
           </div>
           <div className="inputBox">
@@ -96,10 +98,11 @@ export default function LoginForm() {
               required
               value={formData.password}
               onChange={handleInputChange}
+              data-testid="password-input"
             />
           </div>
           <div>
-            <button type="submit" name="" style={{ float: "left" }}>
+            <button type="submit" name="" style={{ float: "left" }} data-testid="submit-button">
               Submit
             </button>
             <a className="button" href="register" style={{ float: "left" }}>
